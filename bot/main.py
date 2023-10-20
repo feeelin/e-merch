@@ -10,5 +10,5 @@ async def start_handler(message: types.Message):
     await message.answer('РАБОТАЕТ!')
 
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     executor.start_polling(dp)
