@@ -52,7 +52,7 @@ ingress:
         - path: /api
           pathType: ImplementationSpecific
   tls:
-    - secretName: nn-svg-tls
+    - secretName: emerch-tls
       hosts:
         - emerch.nakodeelee.ru
 
