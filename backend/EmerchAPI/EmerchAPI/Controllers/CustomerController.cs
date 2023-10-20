@@ -15,37 +15,38 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Customer> GetCustomers()
+    public Customer GetCustomer()
     {
-        return Enumerable.Range(1, 5).Select(index => new Customer
+        var result = new Customer()
+        {
+            Id = Guid.NewGuid(),
+            Nickname = "@username",
+            FirstName = "John",
+            LastName = "Doe",
+            ThumbnailUrl = "https://emerch.ru/content/pictures/1/1.png",
+            ECoins = 100500,
+            Products = new List<Product>()
             {
-                Id = Guid.NewGuid(),
-                Nickname = "@username",
-                FirstName = "John",
-                LastName = "Doe",
-                ThumbnailUrl = "https://emerch.ru/content/pictures/1/1.png",
-                ECoins = index,
-                Products = new List<Product>()
+                new()
                 {
-                    new()
+                    Id = Guid.NewGuid(),
+                    Title = $"Product 1",
+                    Description = $"Product description 1",
+                    AvailableAmount = 124,
+                    DiscountAvailable = 10,
+                    SaleDiscount = false,
+                    ProductContents = new List<ProductContent>()
                     {
-                        Id = Guid.NewGuid(),
-                        Title = $"Product {index}",
-                        Description = $"Product description {index}",
-                        AvailableAmount = 124 + index,
-                        DiscountAvailable = 10 + index,
-                        SaleDiscount = false,
-                        ProductContents = new List<ProductContent>()
+                        new()
                         {
-                            new()
-                            {
-                                ContentPercentage = 10 + index,
-                                ContentName = $"Poliester {index}"
-                            }
+                            ContentPercentage = 10,
+                            ContentName = $"Poliester"
                         }
                     }
-                },
-            })
-            .ToArray();
+                }
+            },
+        };
+        
+        return result;
     }
 }
