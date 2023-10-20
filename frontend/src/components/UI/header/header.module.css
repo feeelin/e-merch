@@ -1,0 +1,30 @@
+.moneyContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2vw;
+}
+
+.moneyContainer > p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+}
+
+.currency{
+    height: 15px;
+}
+
+.logo{
+    height: 50px;
+}
+
+.header{
+    padding: 3vh 3vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center ;
+    background-color: black;
+    color: white
+}
