@@ -14,16 +14,16 @@ public class CustomerController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    public Customer GetCustomer()
+    [HttpGet("{userId}")]
+    public async Task<Customer> GetCustomer([FromRoute] string userId)
     {
         var result = new Customer()
         {
             Id = Guid.NewGuid(),
-            Nickname = "@username",
+            Nickname = userId,
             FirstName = "John",
             LastName = "Doe",
-            ThumbnailUrl = "https://emerch.ru/content/pictures/1/1.png",
+            ThumbnailUrl = "https://emerch.nakodeelee.ru/content/pictures/1/1.png",
             ECoins = 100500,
             Products = new List<Product>()
             {
