@@ -1,6 +1,5 @@
 import telebot
-from telebot import types  # для указание типов
-import config
+from telebot import types
 
 bot = telebot.TeleBot("6451239638:AAH-DINV9PDFiNyT0yv2HbESJoYHTrDT2nU")
 
@@ -19,7 +18,7 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def func(message):
-    if (message.text == "Список товаров"):
+    if message.text == "Список товаров":
             markup = types.InlineKeyboardMarkup()
             button1 = types.InlineKeyboardButton(text='Толстовка', callback_data='толстовка')
             button2 = types.InlineKeyboardButton(text='Кепка', callback_data='кепка')
@@ -31,12 +30,25 @@ def func(message):
                              reply_markup=markup)
             bot.polling(none_stop=True)
 
-    elif (message.text == "Баланс"):
+    elif message.text == "Баланс":
         bot.send_message(message.chat.id, "10000000000000")
-    elif (message.text == "История покупок"):
+    elif message.text == "История покупок":
         bot.send_message(message.chat.id, "ты купил 100 толстовок")
     else:
         bot.send_message(message.chat.id, text="...")
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+    if call.message:
+        if call.data == "толстовка":
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Самая лучшая толстовка")
+        elif call.data == "кепка":
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Одна из самый крутых кепок на планете")
+        elif call.data == "футболка":
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Лучший выбор для свидания")
+        elif call.data == "блокнот":
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Наилучшее место для ваших мыслей")
 
 
 bot.polling(none_stop=True)
