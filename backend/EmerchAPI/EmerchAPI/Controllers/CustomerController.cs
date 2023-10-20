@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EmerchAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CustomerController : ControllerBase
 {
     private readonly ILogger<CustomerController> _logger;
