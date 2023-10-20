@@ -26,7 +26,7 @@ export class EmerchApiClient {
     /**
      * @return Success
      */
-    customer(  cancelToken?: CancelToken | undefined): Promise<Customer[]> {
+    customer(  cancelToken?: CancelToken | undefined): Promise<Customer> {
         let url_ = this.baseUrl + "/api/Customer";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -50,7 +50,7 @@ export class EmerchApiClient {
         });
     }
 
-    protected processCustomer(response: AxiosResponse): Promise<Customer[]> {
+    protected processCustomer(response: AxiosResponse): Promise<Customer> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -64,21 +64,14 @@ export class EmerchApiClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(Customer.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<Customer[]>(result200);
+            result200 = Customer.fromJS(resultData200);
+            return Promise.resolve<Customer>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<Customer[]>(null as any);
+        return Promise.resolve<Customer>(null as any);
     }
 
     /**
