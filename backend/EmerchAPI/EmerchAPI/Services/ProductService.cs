@@ -58,7 +58,7 @@ public class ProductService : IProductService
 
     public async Task<Product> Update(Product entity)
     {
-        var request = new HttpRequestMessage(HttpMethod.Put, "records");
+        var request = new HttpRequestMessage(HttpMethod.Put, $"records/{entity.Id}");
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(entity.Cost.ToString()), nameof(entity.Cost).ToLower());
         content.Add(new StringContent(entity.Description), nameof(entity.Description).ToLower());

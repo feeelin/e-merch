@@ -31,7 +31,7 @@ public class CustomerController : ControllerBase
     [HttpGet("{userId}/history")]
     public async Task<PurchaseListDto> GetPurchases([FromRoute] string userId) => await _historyService.GetPurchaseHistory(userId);
     
-    [HttpDelete("{CustomerCode}")]
+    [HttpDelete("{userId}")]
     public async Task<Customer> DeleteCustomer([FromRoute] string userId) => await _customerService.Delete(userId);
     
     [HttpPost]
