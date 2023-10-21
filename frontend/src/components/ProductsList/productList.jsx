@@ -7,7 +7,7 @@ const ProductList = ({products, pageHandler}) => {
     let productsList = []
 
 
-    {products.map(
+    {products.items?.map(
         (product) => {
             productsList.push(
                 <div onClick={(e) => {pageHandler(product.id)}}>
