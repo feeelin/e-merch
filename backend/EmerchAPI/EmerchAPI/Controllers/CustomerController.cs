@@ -1,4 +1,5 @@
 using EmerchAPI.Models;
+using EmerchAPI.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmerchAPI.Controllers;
@@ -8,45 +9,28 @@ namespace EmerchAPI.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ILogger<CustomerController> _logger;
+    private readonly ICustomerService _customerService;
 
-    public CustomerController(ILogger<CustomerController> logger)
+    public CustomerController(
+        ILogger<CustomerController> logger, 
+        ICustomerService customerService)
     {
         _logger = logger;
+        _customerService = customerService;
     }
 
+    [HttpGet]
+    public async Task<ListResponse<Customer>> GetCustomers() => await _customerService.GetItems();
+
     [HttpGet("{userId}")]
-    public async Task<Customer> GetCustomer([FromRoute] string userId)
-    {
-        var result = new Customer()
-        {
-            Id = Guid.NewGuid(),
-            Nickname = userId,
-            FirstName = "John",
-            LastName = "Doe",
-            ThumbnailUrl = "https://emerch.nakodeelee.ru/content/pictures/1/1.png",
-            ECoins = 100500,
-            Products = new List<Product>()
-            {
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = $"Product 1",
-                    Description = $"Product description 1",
-                    AvailableAmount = 124,
-                    DiscountAvailable = 10,
-                    SaleDiscount = false,
-                    ProductContents = new List<ProductContent>()
-                    {
-                        new()
-                        {
-                            ContentPercentage = 10,
-                            ContentName = $"Poliester"
-                        }
-                    }
-                }
-            },
-        };
-        
-        return result;
-    }
+    public async Task<Customer> GetCustomerById([FromRoute] string userId) => await _customerService.GetItemById(userId);
+    
+    [HttpDelete("{CustomerCode}")]
+    public async Task<Customer> DeleteCustomer([FromRoute] string userId) => await _customerService.Delete(userId);
+    
+    [HttpPost]
+    public async Task<Customer> CreateCustomer([FromBody] Customer customer) => await _customerService.Create(customer);
+
+    [HttpPut]
+    public async Task<Customer> UpdateCustomer([FromBody] Customer customer) => await _customerService.Update(customer);
 }
