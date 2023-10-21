@@ -31,7 +31,6 @@ const ProductPage = ({productId}) => {
 
     return (
         <div>
-            <Header balance={10000}></Header>
             {
                 isProductLoading
                     ? <Loader></Loader>

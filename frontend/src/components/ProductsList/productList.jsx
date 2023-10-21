@@ -2,12 +2,12 @@ import React from 'react';
 import Product from "../Product/Product";
 import classes from './productsList.module.css'
 
-const ProductList = (products, pageHandler) => {
+const ProductList = ({products, pageHandler}) => {
 
     let productsList = []
 
 
-    {products.products.map(
+    {products.map(
         (product) => {
             productsList.push(
                 <div onClick={(e) => {pageHandler(product.id)}}>

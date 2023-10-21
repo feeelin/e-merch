@@ -5,7 +5,7 @@ import Loader from "./UI/loader/loader";
 import {useFetching} from "../hooks/useFetching";
 import PostService from "./API/postService";
 
-const ContentPage = () => {
+const ContentPage = ({page, setPage}) => {
 
     const [fetchProducts, isProductsLoading, productsError] = useFetching(
         async () => {
@@ -14,7 +14,6 @@ const ContentPage = () => {
         }
     )
     let [products, setProducts] = useState([])
-    let [page, setPage] = useState()
 
     const updateContentState = (id) => {
         setPage(id)
@@ -29,10 +28,9 @@ const ContentPage = () => {
 
     return (
         <div className={'contentPage'}>
-            <Header balance={1000}></Header>
             {isProductsLoading
                 ? <Loader></Loader>
-                : <ProductList products={products} ></ProductList>
+                : <ProductList products={products} pageHandler={updateContentState}></ProductList>
             }
         </div>
     );
