@@ -1,0 +1,15 @@
+.form{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+    padding: 20vh 5vw;
+    background-color: black;
+}
+
+.logo{
+    width: 15vw;
+}
