@@ -1,0 +1,72 @@
+.container{
+    display: flex;
+    padding: 5vh 5vw;
+    justify-content: center;
+}
+
+.textContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    padding: 3vh 3vw;
+}
+
+.image{
+    width: 30vw;
+    border-radius: 30px;
+    border: 5px solid black;
+}
+
+.buyContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2vw;
+}
+
+.buyContainer > button {
+    width: auto;
+}
+
+.cost{
+    display: flex;
+    gap: 1vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.triangle{
+    height: 2vh;
+}
+
+.backButton{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .container{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image{
+        height: 30vh;
+        width: auto;
+    }
+
+    .textContainer{
+        align-self: flex-start;
+        padding: 2vh 2vw;
+    }
+
+    .cost{
+        margin-bottom: 10px;
+    }
+
+    .buyContainer > button{
+        width: 90vw;
+        align-self: center;
+    }
+}

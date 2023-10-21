@@ -1,0 +1,25 @@
+.loader{
+    width: 10vw;
+    height: 10vw;
+    animation: rotate 1s linear infinite;
+    border: 1px black;
+}
+
+.loaderContainer{
+    width: 100vw;
+    height: 50vh;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0deg);
+    }
+
+    100%{
+        transform: rotate(360deg);
+    }
+}

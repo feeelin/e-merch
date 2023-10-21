@@ -1,0 +1,14 @@
+.container{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2vh 2vw;
+    animation: load 1s forwards;
+}
+
+@keyframes load {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
