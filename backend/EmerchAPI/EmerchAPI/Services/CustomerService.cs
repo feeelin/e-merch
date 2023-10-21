@@ -57,7 +57,7 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer> Update(Customer entity)
     {
-        var request = new HttpRequestMessage(HttpMethod.Put, $"records/{entity.Id}");
+        var request = new HttpRequestMessage(HttpMethod.Patch, $"records/{entity.Id}");
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
         content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());

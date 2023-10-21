@@ -56,14 +56,13 @@ public class ProductService : IProductService
 
     public async Task<Product> Update(Product entity)
     {
-        var request = new HttpRequestMessage(HttpMethod.Put, $"records/{entity.Id}");
+        var request = new HttpRequestMessage(HttpMethod.Patch, $"records/{entity.Id}");
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(entity.Cost.ToString()), nameof(entity.Cost).ToLower());
         content.Add(new StringContent(entity.Description), nameof(entity.Description).ToLower());
         content.Add(new StringContent(entity.Title), nameof(entity.Title).ToLower());
         content.Add(new StringContent(entity.ImageUrl), nameof(entity.ImageUrl).ToCamelCase());
         content.Add(new StringContent(entity.AvailableAmount.ToString()), nameof(entity.AvailableAmount).ToCamelCase());
-        content.Add(new StringContent(JsonSerializer.Serialize(entity.ProductContents)), nameof(entity.ProductContents).ToCamelCase());
         request.Content = content;
         
         var response = await _httpClient.SendAsync(request);

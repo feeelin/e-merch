@@ -72,7 +72,7 @@ namespace EmerchAPI.Models.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("eCoins")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public long ECoins { get; set; }
 
     }
