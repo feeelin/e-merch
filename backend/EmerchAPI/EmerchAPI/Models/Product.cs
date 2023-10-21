@@ -10,4 +10,5 @@ public class Product
     public bool SaleDiscount { get; set; }
     public int DiscountAvailable { get; set; }
     public List<ProductContent> ProductContents { get; set; }
+    public string ImageUrl { get; set; }
 }

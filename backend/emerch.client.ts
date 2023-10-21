@@ -26,8 +26,11 @@ export class EmerchApiClient {
     /**
      * @return Success
      */
-    customer(  cancelToken?: CancelToken | undefined): Promise<Customer> {
-        let url_ = this.baseUrl + "/api/Customer";
+    customer(userId: string , cancelToken?: CancelToken | undefined): Promise<Customer> {
+        let url_ = this.baseUrl + "/api/Customer/{userId}";
+        if (userId === undefined || userId === null)
+            throw new Error("The parameter 'userId' must be defined.");
+        url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -77,7 +80,7 @@ export class EmerchApiClient {
     /**
      * @return Success
      */
-    product(  cancelToken?: CancelToken | undefined): Promise<Product[]> {
+    productAll(  cancelToken?: CancelToken | undefined): Promise<Product[]> {
         let url_ = this.baseUrl + "/api/Product";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -97,11 +100,11 @@ export class EmerchApiClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProduct(_response);
+            return this.processProductAll(_response);
         });
     }
 
-    protected processProduct(response: AxiosResponse): Promise<Product[]> {
+    protected processProductAll(response: AxiosResponse): Promise<Product[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -130,6 +133,60 @@ export class EmerchApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<Product[]>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    product(productCode: string , cancelToken?: CancelToken | undefined): Promise<Product> {
+        let url_ = this.baseUrl + "/api/Product/{productCode}";
+        if (productCode === undefined || productCode === null)
+            throw new Error("The parameter 'productCode' must be defined.");
+        url_ = url_.replace("{productCode}", encodeURIComponent("" + productCode));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processProduct(_response);
+        });
+    }
+
+    protected processProduct(response: AxiosResponse): Promise<Product> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = Product.fromJS(resultData200);
+            return Promise.resolve<Product>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<Product>(null as any);
     }
 
     /**

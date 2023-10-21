@@ -5,10 +5,20 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Customer": {
+    "/api/Customer/{userId}": {
       "get": {
         "tags": [
           "Customer"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -65,6 +75,45 @@
                   "items": {
                     "$ref": "#/components/schemas/Product"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Product/{productCode}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "parameters": [
+          {
+            "name": "productCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
