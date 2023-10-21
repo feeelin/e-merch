@@ -10,13 +10,16 @@ public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
     private readonly IProductService _productService;
+    private readonly IPurchaseService _purchaseService;
 
     public ProductController(
         ILogger<ProductController> logger, 
-        IProductService productService)
+        IProductService productService, 
+        IPurchaseService purchaseService)
     {
         _logger = logger;
         _productService = productService;
+        _purchaseService = purchaseService;
     }
 
     [HttpGet]
@@ -33,4 +36,7 @@ public class ProductController : ControllerBase
 
     [HttpPut]
     public async Task<Product> UpdateProduct([FromBody] Product product) => await _productService.Update(product);
+    
+    [HttpPut("{userId}/purchase/{productId}")]
+    public async Task<Purchase> PurchaseProduct([FromRoute] string userId, string productId) => await _purchaseService.Purchase(userId, productId);
 }

@@ -1,4 +1,3 @@
-using System.Text.Json;
 using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
 using EmerchAPI.Utils;
@@ -10,8 +9,7 @@ public class CustomerService : ICustomerService
     private readonly HttpClient _httpClient;
     
     public CustomerService(
-        HttpClient httpClient, 
-        IProductService productService)
+        HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
@@ -38,6 +36,13 @@ public class CustomerService : ICustomerService
         var searchResult = await response.Content.ReadFromJsonAsync<CustomerListResponse>();
         var result = searchResult?.Items.FirstOrDefault();
         return result;
+    }
+
+    public async Task<CustomerListResponse> GetExchangePair(string dealerId, string receiverId)
+    {
+        var response = await _httpClient.GetAsync($"records?filter=(id='{dealerId}' && id='{receiverId}')");
+        var searchResult = await response.Content.ReadFromJsonAsync<CustomerListResponse>();
+        return searchResult;
     }
 
     public async Task<Customer> Create(Customer entity)
@@ -79,6 +84,22 @@ public class CustomerService : ICustomerService
             content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
         content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
         content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
+        request.Content = content;
+        
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadFromJsonAsync<Customer>();
+
+        return result ?? new Customer();
+    }
+    
+    public async Task<Customer> UpdateTokenAmount(string userId, int amount)
+    {
+        var customer = await GetItemById(userId);
+        
+        var request = new HttpRequestMessage(HttpMethod.Patch, $"records/{userId}");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent((customer.ECoins + amount).ToString()), nameof(customer.ECoins).ToLower());
         request.Content = content;
         
         var response = await _httpClient.SendAsync(request);
