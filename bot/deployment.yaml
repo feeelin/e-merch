@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: emerch-bot
+    name: emerch-bot
+  name: emerch-bot
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emerch-bot
+  namespace: emerch-bot
+  labels:
+    app: emerch-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emerch-bot
+  template:
+    metadata:
+      labels:
+        app: emerch-bot
+    spec:
+      containers:
+      - name: emerch-bot
+        image: egistry.nakodeelee.ru/emerch-bot:v0
+        ports:
+        - containerPort: 80
