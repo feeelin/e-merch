@@ -36,6 +36,7 @@ public class CustomerService : ICustomerService
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "records");
         var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.TelegramId), nameof(entity.TelegramId).ToCamelCase());
         content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
         content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
         content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());

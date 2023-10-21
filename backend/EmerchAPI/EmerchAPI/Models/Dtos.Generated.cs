@@ -27,6 +27,11 @@ namespace EmerchAPI.Models.Dtos
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string Id { get; set; }
+        
+        [System.Text.Json.Serialization.JsonPropertyName("telegramId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string TelegramId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("collectionId")]
 
