@@ -36,3 +36,9 @@
 .currency{
     width: 12px;
 }
+
+.productContainer:hover{
+    background-color: grey;
+    border: 10px solid grey;
+    cursor: pointer;
+}

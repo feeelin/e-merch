@@ -1,0 +1,30 @@
+.container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    display: none;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.content{
+    padding: 25px;
+    background: white;
+    border-radius: 16px;
+    min-width: 250px;
+}
+
+.active{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: load 0.3s forwards;
+}
+
+@keyframes load {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}

@@ -1,29 +1,42 @@
 import React, {useState, useEffect} from 'react';
 import Header from "./UI/header/header";
-import Product from "./Product/Product";
-import {EmerchApiClient} from "./emerch.client.ts";
 import ProductList from "./ProductsList/productList";
+import Loader from "./UI/loader/loader";
+import {useFetching} from "../hooks/useFetching";
+import PostService from "./API/postService";
 
 const ContentPage = () => {
 
-    let [isLoading, setIsLoading] = useState(false)
-    let client = new EmerchApiClient("https://emerch.nakodeelee.ru")
+    const [fetchProducts, isProductsLoading, productsError] = useFetching(
+        async () => {
+            const receivedProducts = await PostService.getAll();
+            setProducts(receivedProducts)
+        }
+    )
     let [products, setProducts] = useState([])
+    let [page, setPage] = useState()
 
-    useEffect(() => {
-        client.product().then(async (result) => {
-            setProducts(result)
-        })
-    }, [])
+    const updateContentState = (id) => {
+        setPage(id)
+    }
+
+    useEffect( () => {
+        fetchProducts()
+        }, []
+    )
+
 
 
     return (
-        <div>
+        <div className={'contentPage'}>
             <Header balance={1000}></Header>
-            <ProductList products={products}></ProductList>
-
+            {isProductsLoading
+                ? <Loader></Loader>
+                : <ProductList products={products} ></ProductList>
+            }
         </div>
     );
+
 };
 
 export default ContentPage;

@@ -6,3 +6,35 @@
   box-sizing: border-box;
   font-family: Montserrat, serif;
 }
+
+button{
+  padding: 1vh 2vw;
+  border: none;
+  background-color: #45ae31;
+  border-radius: 30px;
+  color: white;
+}
+
+button:hover{
+  background-color: #3d6b33;
+  cursor: pointer;
+}
+
+body{
+  background: linear-gradient(90deg, #bfbfbf, white, rgb(128, 128, 128));
+  background-size: 400% 400%;
+  animation: gradient 8s ease infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes gradient{
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
