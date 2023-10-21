@@ -22,11 +22,11 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<ProductListResponse> GetProducts() => await _productService.GetItems();
 
-    [HttpGet("{productCode}")]
-    public async Task<Product> GetProductById([FromRoute] string productCode) => await _productService.GetItemById(productCode);
+    [HttpGet("{productId}")]
+    public async Task<Product> GetProductById([FromRoute] string productId) => await _productService.GetItemById(productId);
     
-    [HttpDelete("{productCode}")]
-    public async Task<Product> DeleteProduct([FromRoute] string productCode) => await _productService.Delete(productCode);
+    [HttpDelete("{productId}")]
+    public async Task<Product> DeleteProduct([FromRoute] string productId) => await _productService.Delete(productId);
     
     [HttpPost]
     public async Task<Product> CreateProduct([FromBody] Product product) => await _productService.Create(product);

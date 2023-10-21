@@ -27,6 +27,11 @@ namespace EmerchAPI.Models.Dtos
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string Id { get; set; }
+        
+        [System.Text.Json.Serialization.JsonPropertyName("telegramId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string TelegramId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("collectionId")]
 
@@ -70,14 +75,9 @@ namespace EmerchAPI.Models.Dtos
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string ThumbnailUrl { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("products")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<string> Products { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("eCoins")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public long ECoins { get; set; }
 
     }
@@ -108,23 +108,30 @@ namespace EmerchAPI.Models.Dtos
 
     }
     
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class PurchaseListResponse
     {
+        [System.Text.Json.Serialization.JsonPropertyName("page")]
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int Page { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("customerId")]
+        [System.Text.Json.Serialization.JsonPropertyName("perPage")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
-        public string CustomerId { get; set; }
-        
-        [System.Text.Json.Serialization.JsonPropertyName("purchases")]
+        public int PerPage { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("totalItems")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<PurchaseDto> Purchases { get; set; }
-        
-        
+        public int TotalItems { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("items")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.Collections.Generic.ICollection<Purchase> Items { get; set; }
     }
+    
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Purchase
@@ -157,40 +164,44 @@ namespace EmerchAPI.Models.Dtos
         [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime Updated { get; set; }
         
-        [System.Text.Json.Serialization.JsonPropertyName("customer")]
-
+        [System.Text.Json.Serialization.JsonPropertyName("customerId")]
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public string CustomerId { get; set; }
         
-        [System.Text.Json.Serialization.JsonPropertyName("product")]
-
+        [System.Text.Json.Serialization.JsonPropertyName("productId")]
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string ProductId { get; set; }
+    }
+    
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class PurchaseListDto
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string CustomerId { get; set; }
         
-        
+        [System.Text.Json.Serialization.JsonPropertyName("purchases")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.Collections.Generic.ICollection<PurchaseDto> Purchases { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class PurchaseDto
     {
         [System.Text.Json.Serialization.JsonPropertyName("productId")]
-
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public string ProductId { get; set; }
         
         [System.Text.Json.Serialization.JsonPropertyName("title")]
-
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public string Title { get; set; }
         
-        
         [System.Text.Json.Serialization.JsonPropertyName("count")]
-
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(DateFormatConverter))]
         public int Count { get; set; }
     }
 

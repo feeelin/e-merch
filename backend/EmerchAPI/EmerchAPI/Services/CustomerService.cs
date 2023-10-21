@@ -1,21 +1,19 @@
-using System.Text;
 using System.Text.Json;
 using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
+using EmerchAPI.Utils;
 
 namespace EmerchAPI.Services;
 
 public class CustomerService : ICustomerService
 {
     private readonly HttpClient _httpClient;
-    private readonly IProductService _productService;
     
     public CustomerService(
         HttpClient httpClient, 
         IProductService productService)
     {
         _httpClient = httpClient;
-        _productService = productService;
     }
     
     public async Task<CustomerListResponse> GetItems()
@@ -26,34 +24,6 @@ public class CustomerService : ICustomerService
         return result ?? new CustomerListResponse();
     }
 
-    public async Task<PurchaseListResponse> GetPurchaseHistory(string userId)
-    {
-        var productListResponse = await _productService.GetItems();
-        var productsDict = productListResponse.Items.ToDictionary(x => x.Id, y => y.Title);
-        
-        var response = await _httpClient.GetAsync($"https://pocketbase.nakodeelee.ru/api/collections/purchases/?filter=(id='{userId}')");
-        var purchases = await response.Content.ReadFromJsonAsync<List<Purchase>>();
-        var productIds = purchases?.Select(item => item.ProductId).Distinct().ToList() ?? new List<string>();
-
-        var result = new PurchaseListResponse()
-        {
-            CustomerId = userId,
-            Purchases = new List<PurchaseDto>()
-        };
-
-        foreach (var productId in productIds)
-        {
-            result.Purchases.Add(new PurchaseDto
-            {
-                ProductId = productId,
-                Title = productsDict.GetValueOrDefault(productId),
-                Count = purchases?.Where(item=> item.ProductId == productId).Count() ?? 0
-            });
-        }
-        
-        return result;
-    }
-
     public async Task<Customer> GetItemById(string id)
     {
         var response = await _httpClient.GetAsync($"records/{id}");
@@ -61,32 +31,52 @@ public class CustomerService : ICustomerService
 
         return result ?? new Customer();
     }
+    
+    public async Task<Customer?> GetItemByTelegramId(string telegramId)
+    {
+        var response = await _httpClient.GetAsync($"records?filter=(telegramId='{telegramId}')");
+        var searchResult = await response.Content.ReadFromJsonAsync<CustomerListResponse>();
+        var result = searchResult?.Items.FirstOrDefault();
+        return result;
+    }
 
     public async Task<Customer> Create(Customer entity)
     {
-        var json = JsonSerializer.Serialize(entity);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, "records");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.TelegramId), nameof(entity.TelegramId).ToCamelCase());
+        content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
+        content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
+        content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
+        content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
+        content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
+        request.Content = content;
         
-        var response = await _httpClient.PostAsync($"records", content);
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<Customer>();
-
         return result ?? new Customer();
     }
 
     public async Task<Customer> Delete(string id)
     {
         var response = await _httpClient.DeleteAsync($"records/{id}");
-        var result = await response.Content.ReadFromJsonAsync<Customer>();
-
-        return result ?? new Customer();
+        return new Customer();
     }
 
     public async Task<Customer> Update(Customer entity)
     {
-        var json = JsonSerializer.Serialize(entity);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Patch, $"records/{entity.Id}");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
+        content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
+        content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
+        content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
+        content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
+        request.Content = content;
         
-        var response = await _httpClient.PutAsync($"records", content);
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<Customer>();
 
         return result ?? new Customer();
