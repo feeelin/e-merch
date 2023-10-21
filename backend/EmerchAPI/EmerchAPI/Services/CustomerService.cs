@@ -97,6 +97,9 @@ public class CustomerService : ICustomerService
     {
         var customer = await GetItemById(userId);
         
+        if (customer.ECoins < 0)
+            throw new Exception($"Customer {customer.Id} has insufficient ECoins amount! Cannot decrease ECoins amount by {amount}");
+
         var request = new HttpRequestMessage(HttpMethod.Patch, $"records/{userId}");
         var content = new MultipartFormDataContent();
         content.Add(new StringContent((customer.ECoins + amount).ToString()), nameof(customer.ECoins).ToLower());

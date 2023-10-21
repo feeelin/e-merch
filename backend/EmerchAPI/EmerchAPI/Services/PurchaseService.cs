@@ -52,10 +52,13 @@ public class PurchaseService : IPurchaseService
         var product = await _productService.GetItemById(productId);
         var customer = await _customerService.GetItemById(userId);
 
-        var purchaseRequest = new HttpRequestMessage(HttpMethod.Patch, $"records/{userId}");
+        if (customer.ECoins < product.Cost)
+            throw new Exception($"Insufficient ECoins amount! Cannot purchase {product.Title}");
+        
+        var purchaseRequest = new HttpRequestMessage(HttpMethod.Post, $"records");
         var purchaseContent = new MultipartFormDataContent();
-        purchaseContent.Add(new StringContent(userId), nameof(Models.Dtos.Purchase.CustomerId).ToLower());
-        purchaseContent.Add(new StringContent(productId), nameof(Models.Dtos.Purchase.ProductId).ToLower());
+        purchaseContent.Add(new StringContent(userId), "customerId");
+        purchaseContent.Add(new StringContent(productId), "productId");
         purchaseRequest.Content = purchaseContent;
 
         customer.ECoins -= product.Cost;
@@ -74,19 +77,17 @@ public class PurchaseService : IPurchaseService
         var dealer = await _customerService.GetItemById(dealerId);
         var receiver = await _customerService.GetItemById(receiverId);
         
-        var dealerRequest = new HttpRequestMessage(HttpMethod.Patch, $"records/{dealerId}");
-        var dealerContent = new MultipartFormDataContent();
-        dealerContent.Add(new StringContent((dealer.ECoins - amount).ToString()), "ecoins");
-        dealerRequest.Content = dealerContent;
+        if (amount < 0)
+            throw new Exception($"Invalid ECoins amount! Value cannot be less than zero!");
         
-        var receiverRequest = new HttpRequestMessage(HttpMethod.Patch, $"records/{receiverId}");
-        var receiverContent = new MultipartFormDataContent();
-        receiverContent.Add(new StringContent((receiver.ECoins + amount).ToString()), "ecoins");
-        receiverRequest.Content = receiverContent;
+        if (dealer.ECoins < amount)
+            throw new Exception($"Insufficient ECoins amount! Cannot send {amount} ECoins from {dealerId} to {receiverId}");
         
-        var dealerUpdate = _httpClient.SendAsync(dealerRequest);
-        var receiverUpdate = _httpClient.SendAsync(receiverRequest);
-        await Task.WhenAll(dealerUpdate, receiverUpdate);
+        dealer.ECoins -= amount;
+        receiver.ECoins += amount;
+        var dealerTx = _customerService.Update(dealer);
+        var receiverTx = _customerService.Update(receiver);
+        await Task.WhenAll(dealerTx, receiverTx);
         
         var result = await _customerService.GetExchangePair(dealerId, receiverId);
         return result;
