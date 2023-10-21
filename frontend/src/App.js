@@ -8,24 +8,25 @@ import React, {useState} from "react";
 function App() {
     let [page, setPage] = useState('')
     let [isLogin, setIsLogin] = useState(false)
+    let [user, setUser] = useState('')
 
-    if(isLogin){
+    // if(isLogin){
         return (
             <div>
-                <Header balance={10000}></Header>
+                <Header user={user}></Header>
                 {page
                     ? <ProductPage productId={page} setPage={setPage}/>
                     : <ContentPage page={page} setPage={setPage}></ContentPage>
                 }
             </div>
         );
-    }else{
-        return(
-            <div>
-                <LoginPage></LoginPage>
-            </div>
-        )
-    }
+    // }else{
+    //     return(
+    //         <div>
+    //             <LoginPage setUser={setUser} setIsLogin={setIsLogin}></LoginPage>
+    //         </div>
+    //     )
+    // }
 
 }
 
