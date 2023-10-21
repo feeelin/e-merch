@@ -124,7 +124,7 @@ public class ProductController : ControllerBase
             DiscountAvailable = 10,
             SaleDiscount = false,
             Cost = 300,
-            ImageUrl = "https://cdn.nakodeelee.ru/content/tee/{index}.png",
+            ImageUrl = $"https://cdn.nakodeelee.ru/content/tee/1.png",
             ProductContents = new List<ProductContent>()
             {
                 new()
