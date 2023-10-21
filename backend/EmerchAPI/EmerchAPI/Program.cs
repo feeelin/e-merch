@@ -1,4 +1,4 @@
-using EmerchAPI.Models;
+using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services;
 using EmerchAPI.Services.Abstraction;
 
