@@ -325,6 +325,7 @@ export class Product implements IProduct {
     saleDiscount?: boolean;
     discountAvailable?: number;
     productContents?: ProductContent[] | undefined;
+    imageUrl?: string | undefined;
 
     constructor(data?: IProduct) {
         if (data) {
@@ -349,6 +350,7 @@ export class Product implements IProduct {
                 for (let item of _data["productContents"])
                     this.productContents!.push(ProductContent.fromJS(item));
             }
+            this.imageUrl = _data["imageUrl"];
         }
     }
 
@@ -373,6 +375,7 @@ export class Product implements IProduct {
             for (let item of this.productContents)
                 data["productContents"].push(item.toJSON());
         }
+        data["imageUrl"] = this.imageUrl;
         return data;
     }
 }
@@ -386,6 +389,7 @@ export interface IProduct {
     saleDiscount?: boolean;
     discountAvailable?: number;
     productContents?: ProductContent[] | undefined;
+    imageUrl?: string | undefined;
 }
 
 export class ProductContent implements IProductContent {
