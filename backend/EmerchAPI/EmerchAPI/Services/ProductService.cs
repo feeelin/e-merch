@@ -51,9 +51,7 @@ public class ProductService : IProductService
     public async Task<Product> Delete(string id)
     {
         var response = await _httpClient.DeleteAsync($"records/{id}");
-        var result = await response.Content.ReadFromJsonAsync<Product>();
-
-        return result ?? new Product();
+        return new Product();
     }
 
     public async Task<Product> Update(Product entity)

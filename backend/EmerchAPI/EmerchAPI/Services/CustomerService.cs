@@ -41,7 +41,6 @@ public class CustomerService : ICustomerService
         content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
         content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
         content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
-        content.Add(new StringContent(JsonSerializer.Serialize(entity.Products)), nameof(entity.Products).ToLower());
         request.Content = content;
         
         var response = await _httpClient.SendAsync(request);
@@ -53,9 +52,7 @@ public class CustomerService : ICustomerService
     public async Task<Customer> Delete(string id)
     {
         var response = await _httpClient.DeleteAsync($"records/{id}");
-        var result = await response.Content.ReadFromJsonAsync<Customer>();
-
-        return result ?? new Customer();
+        return new Customer();
     }
 
     public async Task<Customer> Update(Customer entity)
@@ -67,7 +64,6 @@ public class CustomerService : ICustomerService
         content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
         content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
         content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
-        content.Add(new StringContent(JsonSerializer.Serialize(entity.Products)), nameof(entity.Products).ToLower());
         request.Content = content;
         
         var response = await _httpClient.SendAsync(request);

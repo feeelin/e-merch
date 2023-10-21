@@ -70,11 +70,6 @@ namespace EmerchAPI.Models.Dtos
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string ThumbnailUrl { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("products")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<string> Products { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("eCoins")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
