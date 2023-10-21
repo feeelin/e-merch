@@ -45,9 +45,12 @@ public class CustomerService : ICustomerService
         var request = new HttpRequestMessage(HttpMethod.Post, "records");
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(entity.TelegramId), nameof(entity.TelegramId).ToCamelCase());
-        content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
-        content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
-        content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
+        if (!string.IsNullOrEmpty(entity.Nickname))
+            content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
+        if (!string.IsNullOrEmpty(entity.FirstName))
+            content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
+        if (!string.IsNullOrEmpty(entity.LastName))
+            content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
         content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
         content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
         request.Content = content;
@@ -68,9 +71,12 @@ public class CustomerService : ICustomerService
     {
         var request = new HttpRequestMessage(HttpMethod.Patch, $"records/{entity.Id}");
         var content = new MultipartFormDataContent();
-        content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
-        content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
-        content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
+        if (!string.IsNullOrEmpty(entity.Nickname))
+            content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
+        if (!string.IsNullOrEmpty(entity.FirstName))
+            content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
+        if (!string.IsNullOrEmpty(entity.LastName))
+            content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
         content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
         content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
         request.Content = content;
