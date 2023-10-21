@@ -26,6 +26,11 @@ builder.Services
         c.BaseAddress = new System.Uri("https://pocketbase.nakodeelee.ru/api/collections/customers/");
     });
 builder.Services
+    .AddHttpClient<IHistoryService, HistoryService>(c =>
+    {
+        c.BaseAddress = new System.Uri("https://pocketbase.nakodeelee.ru/api/collections/purchases/");
+    });
+builder.Services
     .AddHttpClient<IYooMoneyService, YooMoneyService>(c =>
     {
         c.BaseAddress = new System.Uri("https://yoomoney.ru/api/");

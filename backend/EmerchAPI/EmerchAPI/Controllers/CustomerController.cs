@@ -10,13 +10,16 @@ public class CustomerController : ControllerBase
 {
     private readonly ILogger<CustomerController> _logger;
     private readonly ICustomerService _customerService;
+    private readonly IHistoryService _historyService;
 
     public CustomerController(
         ILogger<CustomerController> logger, 
-        ICustomerService customerService)
+        ICustomerService customerService, 
+        IHistoryService historyService)
     {
         _logger = logger;
         _customerService = customerService;
+        _historyService = historyService;
     }
 
     [HttpGet]
@@ -26,7 +29,7 @@ public class CustomerController : ControllerBase
     public async Task<Customer> GetCustomerById([FromRoute] string userId) => await _customerService.GetItemById(userId);
     
     [HttpGet("{userId}/history")]
-    public async Task<PurchaseListResponse> GetPurchases([FromRoute] string userId) => await _customerService.GetPurchaseHistory(userId);
+    public async Task<PurchaseListDto> GetPurchases([FromRoute] string userId) => await _historyService.GetPurchaseHistory(userId);
     
     [HttpDelete("{CustomerCode}")]
     public async Task<Customer> DeleteCustomer([FromRoute] string userId) => await _customerService.Delete(userId);
