@@ -12,7 +12,7 @@ function App() {
       <div>
         <Header balance={10000}></Header>
           {page
-              ? <ProductPage productId={page}/>
+              ? <ProductPage productId={page} setPage={setPage}/>
               : <ContentPage page={page} setPage={setPage}></ContentPage>
         }
       </div>
