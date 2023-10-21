@@ -5,4 +5,6 @@ namespace EmerchAPI.Services.Abstraction;
 public interface ICustomerService : IDatabaseService<Customer>
 {
     public Task<CustomerListResponse> GetItems();
+    public Task<Customer?> GetItemByTelegramId(string telegramId);
+
 }

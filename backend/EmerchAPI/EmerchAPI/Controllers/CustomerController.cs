@@ -28,6 +28,17 @@ public class CustomerController : ControllerBase
     [HttpGet("{userId}")]
     public async Task<Customer> GetCustomerById([FromRoute] string userId) => await _customerService.GetItemById(userId);
     
+    [Produces(typeof(Customer))]
+    [HttpGet("telegram/{telegramId}")]
+    public async Task<IActionResult> GetCustomerByTelegramId([FromRoute] string telegramId)
+    {
+        var result = await _customerService.GetItemByTelegramId(telegramId);
+        if (result is null)
+            return NotFound();
+
+        return Ok(result);
+    }
+    
     [HttpGet("{userId}/history")]
     public async Task<PurchaseListDto> GetPurchases([FromRoute] string userId) => await _historyService.GetPurchaseHistory(userId);
     

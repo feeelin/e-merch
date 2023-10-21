@@ -31,6 +31,14 @@ public class CustomerService : ICustomerService
 
         return result ?? new Customer();
     }
+    
+    public async Task<Customer?> GetItemByTelegramId(string telegramId)
+    {
+        var response = await _httpClient.GetAsync($"records?filter=(telegramId='{telegramId}')");
+        var searchResult = await response.Content.ReadFromJsonAsync<CustomerListResponse>();
+        var result = searchResult?.Items.FirstOrDefault();
+        return result;
+    }
 
     public async Task<Customer> Create(Customer entity)
     {
