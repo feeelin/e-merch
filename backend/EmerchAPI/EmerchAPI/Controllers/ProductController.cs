@@ -1,4 +1,4 @@
-using EmerchAPI.Models;
+using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +20,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ListResponse<Product>> GetProducts() => await _productService.GetItems();
+    public async Task<ProductListResponse> GetProducts() => await _productService.GetItems();
 
     [HttpGet("{productCode}")]
     public async Task<Product> GetProductById([FromRoute] string productCode) => await _productService.GetItemById(productCode);

@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using EmerchAPI.Models;
+using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
 
 namespace EmerchAPI.Services;
@@ -14,12 +14,12 @@ public class ProductService : IProductService
         _httpClient = httpClient;
     }
 
-    public async Task<ListResponse<Product>> GetItems()
+    public async Task<ProductListResponse> GetItems()
     {
         var response = await _httpClient.GetAsync("records");
-        var result = await response.Content.ReadFromJsonAsync<ListResponse<Product>>();
+        var result = await response.Content.ReadFromJsonAsync<ProductListResponse>();
 
-        return result ?? new ListResponse<Product>();
+        return result ?? new ProductListResponse();
     }
 
     public async Task<Product> GetItemById(string id)

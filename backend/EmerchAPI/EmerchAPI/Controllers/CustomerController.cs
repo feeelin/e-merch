@@ -1,4 +1,4 @@
-using EmerchAPI.Models;
+using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,10 +20,13 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ListResponse<Customer>> GetCustomers() => await _customerService.GetItems();
+    public async Task<CustomerListResponse> GetCustomers() => await _customerService.GetItems();
 
     [HttpGet("{userId}")]
     public async Task<Customer> GetCustomerById([FromRoute] string userId) => await _customerService.GetItemById(userId);
+    
+    [HttpGet("{userId}/history")]
+    public async Task<PurchaseListResponse> GetPurchases([FromRoute] string userId) => await _customerService.GetPurchaseHistory(userId);
     
     [HttpDelete("{CustomerCode}")]
     public async Task<Customer> DeleteCustomer([FromRoute] string userId) => await _customerService.Delete(userId);
