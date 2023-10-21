@@ -37,7 +37,7 @@ public class HistoryService : IHistoryService
             {
                 ProductId = productId,
                 Title = productsDict.GetValueOrDefault(productId),
-                Count = purchasesResponse.Items?.Where(item=> item.ProductId == productId).Count() ?? 0
+                Count = purchasesResponse?.Items.Where(item=> item.ProductId == productId).Count() ?? 0
             });
         }
         

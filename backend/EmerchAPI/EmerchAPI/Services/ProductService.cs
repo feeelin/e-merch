@@ -1,7 +1,7 @@
-using System.Text;
 using System.Text.Json;
 using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
+using EmerchAPI.Utils;
 
 namespace EmerchAPI.Services;
 
@@ -32,10 +32,17 @@ public class ProductService : IProductService
 
     public async Task<Product> Create(Product entity)
     {
-        var json = JsonSerializer.Serialize(entity);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, "records");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.Cost.ToString()), nameof(entity.Cost).ToLower());
+        content.Add(new StringContent(entity.Description), nameof(entity.Description).ToLower());
+        content.Add(new StringContent(entity.Title), nameof(entity.Title).ToLower());
+        content.Add(new StringContent(entity.ImageUrl), nameof(entity.ImageUrl).ToCamelCase());
+        content.Add(new StringContent(entity.AvailableAmount.ToString()), nameof(entity.AvailableAmount).ToCamelCase());
+        content.Add(new StringContent(JsonSerializer.Serialize(entity.ProductContents)), nameof(entity.ProductContents).ToCamelCase());
+        request.Content = content;
         
-        var response = await _httpClient.PostAsync($"records", content);
+        var response = await _httpClient.SendAsync(request);
         var result = await response.Content.ReadFromJsonAsync<Product>();
 
         return result ?? new Product();
@@ -51,10 +58,18 @@ public class ProductService : IProductService
 
     public async Task<Product> Update(Product entity)
     {
-        var json = JsonSerializer.Serialize(entity);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Put, "records");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.Cost.ToString()), nameof(entity.Cost).ToLower());
+        content.Add(new StringContent(entity.Description), nameof(entity.Description).ToLower());
+        content.Add(new StringContent(entity.Title), nameof(entity.Title).ToLower());
+        content.Add(new StringContent(entity.ImageUrl), nameof(entity.ImageUrl).ToCamelCase());
+        content.Add(new StringContent(entity.AvailableAmount.ToString()), nameof(entity.AvailableAmount).ToCamelCase());
+        content.Add(new StringContent(JsonSerializer.Serialize(entity.ProductContents)), nameof(entity.ProductContents).ToCamelCase());
+        request.Content = content;
         
-        var response = await _httpClient.PutAsync($"records", content);
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<Product>();
 
         return result ?? new Product();

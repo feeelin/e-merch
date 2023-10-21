@@ -1,21 +1,19 @@
-using System.Text;
 using System.Text.Json;
 using EmerchAPI.Models.Dtos;
 using EmerchAPI.Services.Abstraction;
+using EmerchAPI.Utils;
 
 namespace EmerchAPI.Services;
 
 public class CustomerService : ICustomerService
 {
     private readonly HttpClient _httpClient;
-    private readonly IProductService _productService;
     
     public CustomerService(
         HttpClient httpClient, 
         IProductService productService)
     {
         _httpClient = httpClient;
-        _productService = productService;
     }
     
     public async Task<CustomerListResponse> GetItems()
@@ -36,12 +34,19 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer> Create(Customer entity)
     {
-        var json = JsonSerializer.Serialize(entity);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, "records");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
+        content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
+        content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
+        content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
+        content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
+        content.Add(new StringContent(JsonSerializer.Serialize(entity.Products)), nameof(entity.Products).ToLower());
+        request.Content = content;
         
-        var response = await _httpClient.PostAsync($"records", content);
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<Customer>();
-
         return result ?? new Customer();
     }
 
@@ -55,10 +60,18 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer> Update(Customer entity)
     {
-        var json = JsonSerializer.Serialize(entity);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Put, "records");
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(entity.Nickname), nameof(entity.Nickname).ToLower());
+        content.Add(new StringContent(entity.FirstName), nameof(entity.FirstName).ToLower());
+        content.Add(new StringContent(entity.LastName), nameof(entity.LastName).ToLower());
+        content.Add(new StringContent(entity.ThumbnailUrl), nameof(entity.ThumbnailUrl).ToCamelCase());
+        content.Add(new StringContent(entity.ECoins.ToString()), nameof(entity.ECoins).ToLower());
+        content.Add(new StringContent(JsonSerializer.Serialize(entity.Products)), nameof(entity.Products).ToLower());
+        request.Content = content;
         
-        var response = await _httpClient.PutAsync($"records", content);
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadFromJsonAsync<Customer>();
 
         return result ?? new Customer();
