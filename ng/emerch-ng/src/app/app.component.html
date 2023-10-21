@@ -1,0 +1,35 @@
+<tui-root>
+  <!-- content of your app -->
+	<tui-avatar
+      class="tui-space_top-1"
+      [avatarUrl]="avatar"
+  ></tui-avatar>
+  <tui-avatar
+      text="alex inkin"
+      class="tui-space_top-1"
+  ></tui-avatar>
+  <tui-avatar
+      size="l"
+      text="dmitriy demenskiy"
+      class="tui-space_top-1"
+      [rounded]="true"
+  ></tui-avatar>
+  <!--
+     If you need, you can add something between Taiga portal layers:
+    -->
+  <ng-container ngProjectAs="tuiOverContent">
+    <!-- Content over app content -->
+  </ng-container>
+  <ng-container ngProjectAs="tuiOverDialogs">
+    <!-- Content over dialogs -->
+  </ng-container>
+  <ng-container ngProjectAs="tuiOverAlerts">
+    <!-- Content over alerts -->
+  </ng-container>
+  <ng-container ngProjectAs="tuiOverPortals">
+    <!-- Content over dropdowns -->
+  </ng-container>
+  <ng-container ngProjectAs="tuiOverHints">
+    <!-- Content over hints -->
+  </ng-container>
+</tui-root>
