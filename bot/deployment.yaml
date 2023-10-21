@@ -26,6 +26,6 @@ spec:
     spec:
       containers:
       - name: emerch-bot
-        image: egistry.nakodeelee.ru/emerch-bot:v0
+        image: registry.nakodeelee.ru/emerch-bot:v0
         ports:
         - containerPort: 80
