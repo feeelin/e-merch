@@ -7,7 +7,7 @@ import {ReactComponent as Triangle} from "./currency.svg";
 import Popup from "../UI/popup/popup";
 import Loader from "../UI/loader/loader";
 
-const ProductPage = ({productId}) => {
+const ProductPage = ({productId, setPage}) => {
     const [product, setProduct] = useState({})
     const [popup, setPopup] = useState(false)
     const [message, setMessage] = useState('')
@@ -36,6 +36,7 @@ const ProductPage = ({productId}) => {
                     ? <Loader></Loader>
                     : <div>
                         <div>
+                            <button onClick={() => {setPage('')}} className={classes.backButton}>Назад</button>
                             <div className={classes.container}>
                                 <img src={product.imageUrl} alt={product.title} className={classes.image}/>
                                 <div className={classes.textContainer}>
