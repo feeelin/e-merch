@@ -5,8 +5,7 @@ import {ReactComponent as Logo} from "./logo.svg";
 import axios from "axios";
 
 const LoginPage = ({setUser, setIsLogin, tgWebAppData}) => {
-    const [telegramUser, setTelegramUser] = useState()
-
+    
     const getCorrectUser = (telegramUser) => {
         return {
             telegramId: telegramUser.id + '',
@@ -17,30 +16,25 @@ const LoginPage = ({setUser, setIsLogin, tgWebAppData}) => {
         }
     }
 
-    useEffect(
-        () => {
-            let user = JSON.parse(tgWebAppData.get('user'));
-            if(Object.keys(user).length){
-                let correct = getCorrectUser(user)
-                axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${correct.telegramId}`)
-                    .then(response => {
-                        setUser(response.data)
-                        setIsLogin(true)
-                    })
-                    .catch(error => {
+    let user = JSON.parse(tgWebAppData.get('user'));
+    if(Object.keys(user).length){
+        let correct = getCorrectUser(user)
+        axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${correct.telegramId}`)
+            .then(response => {
+                setUser(response.data)
+                setIsLogin(true)
+            })
+            .catch(error => {
 
-                        axios.post('https://emerch.nakodeelee.ru/api/Customer', correct)
-                            .then(response => {setUser(response.data)})
-                    })
-            }
-        }, [telegramUser]
-    )
-    
+                axios.post('https://emerch.nakodeelee.ru/api/Customer', correct)
+                    .then(response => {setUser(response.data)})
+            })
+    }
 
     return (
         <div className={classes.form}>
             <Logo className={classes.logo}/>
-            <TelegramLoginButton dataOnauth={user => {setTelegramUser(user)}} botName={'EMerchBot'}></TelegramLoginButton>
+            <TelegramLoginButton dataOnauth={user => {setUser(getCorrectUser(user))}} botName={'EMerchBot'}></TelegramLoginButton>
         </div>
     );
 };
