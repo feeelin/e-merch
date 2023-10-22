@@ -3,7 +3,6 @@ import TelegramLoginButton from "telegram-login-button";
 import classes from './loginPage.module.css'
 import {ReactComponent as Logo} from "./logo.svg";
 import axios from "axios";
-import {useInitData} from '@vkruglikov/react-telegram-web-app'
 
 const LoginPage = ({setUser, setIsLogin}) => {
     const [telegramUser, setTelegramUser] = useState({})
@@ -14,7 +13,9 @@ const LoginPage = ({setUser, setIsLogin}) => {
     let tgWebAppData = new URLSearchParams(hashParams.get('tgWebAppData'));
     let user = JSON.parse(tgWebAppData.get('user'));
 
-    setTelegramUser(user)
+    if(user){
+        setTelegramUser(user)
+    }
 
     const getCorrectUser = (telegramUser) => {
         return {

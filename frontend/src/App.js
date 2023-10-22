@@ -10,7 +10,7 @@ function App() {
     let [isLogin, setIsLogin] = useState(false)
     let [user, setUser] = useState('')
 
-    // if(isLogin){
+    if(isLogin){
         return (
             <div>
                 <Header user={user}></Header>
@@ -20,13 +20,13 @@ function App() {
                 }
             </div>
         );
-    // }else{
-    //     return(
-    //         <div>
-    //             <LoginPage setUser={setUser} setIsLogin={setIsLogin}></LoginPage>
-    //         </div>
-    //     )
-    // }
+    }else{
+        return(
+            <div>
+                <LoginPage setUser={setUser} setIsLogin={setIsLogin}></LoginPage>
+            </div>
+        )
+    }
 
 }
 
