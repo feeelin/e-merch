@@ -29,3 +29,8 @@
     color: white
 }
 
+.userImage{
+    height: 10vh;
+    border: 3px white solid;
+    border-radius: 50%;
+}

@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<IYooMoneyService, YooMoneyService>();
+builder.Services.AddTransient<IPurchaseService, PurchaseService>();
 
 builder.Services
     .AddHttpClient<IProductService, ProductService>(c =>
@@ -26,14 +26,9 @@ builder.Services
         c.BaseAddress = new System.Uri("https://pocketbase.nakodeelee.ru/api/collections/customers/");
     });
 builder.Services
-    .AddHttpClient<IHistoryService, HistoryService>(c =>
+    .AddHttpClient<IPurchaseService, PurchaseService>(c =>
     {
         c.BaseAddress = new System.Uri("https://pocketbase.nakodeelee.ru/api/collections/purchases/");
-    });
-builder.Services
-    .AddHttpClient<IYooMoneyService, YooMoneyService>(c =>
-    {
-        c.BaseAddress = new System.Uri("https://yoomoney.ru/api/");
     });
 
 var app = builder.Build();

@@ -10,16 +10,16 @@ public class CustomerController : ControllerBase
 {
     private readonly ILogger<CustomerController> _logger;
     private readonly ICustomerService _customerService;
-    private readonly IHistoryService _historyService;
+    private readonly IPurchaseService _purchaseService;
 
     public CustomerController(
         ILogger<CustomerController> logger, 
         ICustomerService customerService, 
-        IHistoryService historyService)
+        IPurchaseService purchaseService)
     {
         _logger = logger;
         _customerService = customerService;
-        _historyService = historyService;
+        _purchaseService = purchaseService;
     }
 
     [HttpGet]
@@ -40,7 +40,7 @@ public class CustomerController : ControllerBase
     }
     
     [HttpGet("{userId}/history")]
-    public async Task<PurchaseListDto> GetPurchases([FromRoute] string userId) => await _historyService.GetPurchaseHistory(userId);
+    public async Task<PurchaseListDto> GetPurchases([FromRoute] string userId) => await _purchaseService.GetPurchaseHistory(userId);
     
     [HttpDelete("{userId}")]
     public async Task<Customer> DeleteCustomer([FromRoute] string userId) => await _customerService.Delete(userId);
@@ -50,4 +50,12 @@ public class CustomerController : ControllerBase
 
     [HttpPut]
     public async Task<Customer> UpdateCustomer([FromBody] Customer customer) => await _customerService.Update(customer);
+    
+    [HttpPut("from/{dealerId}/to/{receiverId}/{amount}")]
+    public async Task<CustomerListResponse> Exchange([FromRoute] string dealerId, [FromRoute] string receiverId,[FromRoute] int amount) =>
+        await _purchaseService.Exchange(dealerId, receiverId, amount);
+    
+    [HttpPut("add/{amount}/to/{receiverId}")]
+    public async Task<Customer> UpdateTokenAmount([FromRoute] string receiverId,[FromRoute] int amount) =>
+        await _customerService.UpdateTokenAmount(receiverId, amount);
 }
