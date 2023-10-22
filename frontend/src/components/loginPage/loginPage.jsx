@@ -16,15 +16,18 @@ const LoginPage = ({setUserCallback, loginCallback, tgWebAppData}) => {
         }
     }
 
-    let telegramUser = JSON.parse(tgWebAppData.get('user'));
+    let telegramUser = {}
+    let convertedUser = {};
+    if (Object.keys(tgWebAppData).length)
+        telegramUser = JSON.parse(tgWebAppData.get('user'));
+
     if(Object.keys(telegramUser).length){
-        let convertedUser = {};
         axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${telegramUser.id}`)
             .then(response => {
                 convertedUser = response.data;
             })
             .catch(error => {
-                axios.post('https://emerch.nakodeelee.ru/api/Customer', correct)
+                axios.post('https://emerch.nakodeelee.ru/api/Customer', convertedUser)
                     .then(response => {
                         convertedUser = response.data;
                     })
