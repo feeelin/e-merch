@@ -29,7 +29,7 @@ function App() {
     }else{
         return(
             <div>
-                <LoginPage setUser={setUser} setIsLogin={setIsLogin} tgWebAppData={setTgWebAppData}></LoginPage>
+                <LoginPage setUserCallback={setUser} loginCallback={setIsLogin} tgWebAppData={tg}></LoginPage>
             </div>
         )
     }

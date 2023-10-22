@@ -4,7 +4,7 @@ import classes from './loginPage.module.css'
 import {ReactComponent as Logo} from "./logo.svg";
 import axios from "axios";
 
-const LoginPage = ({setUser, setIsLogin, tgWebAppData}) => {
+const LoginPage = ({setUserCallback, loginCallback, tgWebAppData}) => {
     
     const getCorrectUser = (telegramUser) => {
         return {
@@ -16,25 +16,28 @@ const LoginPage = ({setUser, setIsLogin, tgWebAppData}) => {
         }
     }
 
-    let user = JSON.parse(tgWebAppData.get('user'));
-    if(Object.keys(user).length){
-        let correct = getCorrectUser(user)
-        axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${correct.telegramId}`)
+    let telegramUser = JSON.parse(tgWebAppData.get('user'));
+    if(Object.keys(telegramUser).length){
+        let convertedUser = {};
+        axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${telegramUser.id}`)
             .then(response => {
-                setUser(response.data)
-                setIsLogin(true)
+                convertedUser = response.data;
             })
             .catch(error => {
-
                 axios.post('https://emerch.nakodeelee.ru/api/Customer', correct)
-                    .then(response => {setUser(response.data)})
+                    .then(response => {
+                        convertedUser = response.data;
+                    })
+            }).finally(() => {
+                setUserCallback(convertedUser)
+                loginCallback(true)
             })
     }
 
     return (
         <div className={classes.form}>
             <Logo className={classes.logo}/>
-            <TelegramLoginButton dataOnauth={user => {setUser(getCorrectUser(user))}} botName={'EMerchBot'}></TelegramLoginButton>
+            <TelegramLoginButton dataOnauth={user => {setUserCallback(getCorrectUser(user))}} botName={'EMerchBot'}></TelegramLoginButton>
         </div>
     );
 };
