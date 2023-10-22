@@ -3,11 +3,9 @@ import TelegramLoginButton from "telegram-login-button";
 import classes from './loginPage.module.css'
 import {ReactComponent as Logo} from "./logo.svg";
 import axios from "axios";
-import {useInitData} from '@vkruglikov/react-telegram-web-app'
 
-const LoginPage = ({setUser, setIsLogin}) => {
-    const [telegramUser, setTelegramUser] = useState({})
-
+const LoginPage = ({setUserCallback, loginCallback, tgWebAppData}) => {
+    
     const getCorrectUser = (telegramUser) => {
         return {
             telegramId: telegramUser.id + '',
@@ -18,31 +16,36 @@ const LoginPage = ({setUser, setIsLogin}) => {
         }
     }
 
-    useEffect(
-        () => {
-            if(Object.keys(telegramUser).length){
-                let correct = getCorrectUser(telegramUser)
+    let telegramUser = {}
+    let convertedUser = {};
+    if (Object.keys(tgWebAppData).length)
+        telegramUser = JSON.parse(tgWebAppData.get('user'));
 
-                axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${correct.telegramId}`)
+    if(Object.keys(telegramUser).length){
+        axios.get(`https://emerch.nakodeelee.ru/api/Customer/telegram/${telegramUser.id}`)
+            .then(response => {
+                convertedUser = response.data;
+            })
+            .catch(error => {
+                axios.post('https://emerch.nakodeelee.ru/api/Customer', convertedUser)
                     .then(response => {
-                        setUser(response.data)
-                        setIsLogin(true)
+                        convertedUser = response.data;
                     })
-                    .catch(error => {
-
-                        axios.post('https://emerch.nakodeelee.ru/api/Customer', correct)
-                            .then(response => {setUser(response.data)})
-
-                    })
-            }
-        }, [telegramUser]
-    )
-    
+            }).finally(() => {
+                setUserCallback(convertedUser)
+                loginCallback(true)
+            })
+    }
 
     return (
         <div className={classes.form}>
             <Logo className={classes.logo}/>
-            <TelegramLoginButton dataOnauth={user => {setTelegramUser(user)}} botName={'EMerchBot'}></TelegramLoginButton>
+            <TelegramLoginButton dataOnauth={user =>
+             {
+                let fetchedUser = getCorrectUser(user);
+                setUserCallback(fetchedUser);
+                loginCallback(true);
+             }} botName={'EMerchBot'}></TelegramLoginButton>
         </div>
     );
 };
