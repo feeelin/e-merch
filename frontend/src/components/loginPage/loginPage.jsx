@@ -8,6 +8,14 @@ import {useInitData} from '@vkruglikov/react-telegram-web-app'
 const LoginPage = ({setUser, setIsLogin}) => {
     const [telegramUser, setTelegramUser] = useState({})
 
+    let tg = window.location.hash;
+    let hash = window.location.hash.slice(1);
+    let hashParams = new URLSearchParams(hash);
+    let tgWebAppData = new URLSearchParams(hashParams.get('tgWebAppData'));
+    let user = JSON.parse(tgWebAppData.get('user'));
+
+    setTelegramUser(user)
+
     const getCorrectUser = (telegramUser) => {
         return {
             telegramId: telegramUser.id + '',
