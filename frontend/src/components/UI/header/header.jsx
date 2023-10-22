@@ -12,7 +12,7 @@ const Header = ({user}) => {
     return (
         <div>
             <Popup visible={isVisible} setVisible={setIsVisible}>
-                <Profile></Profile>
+                <Profile user={user}></Profile>
             </Popup>
             <div className={classes.header}>
                 <Logo className={classes.logo}></Logo>

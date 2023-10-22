@@ -41,8 +41,8 @@
 }
 
 .backButton{
-    margin-top: 10px;
-    margin-left: 10px;
+    margin-top: 2vh;
+    margin-left: 5vw;
 }
 
 @media screen and (max-width: 768px) {

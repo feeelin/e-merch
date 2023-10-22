@@ -10,23 +10,23 @@ function App() {
     let [isLogin, setIsLogin] = useState(false)
     let [user, setUser] = useState('')
 
-    // if(isLogin){
+    if(isLogin){
         return (
             <div>
                 <Header user={user}></Header>
                 {page
-                    ? <ProductPage productId={page} setPage={setPage}/>
+                    ? <ProductPage productId={page} setPage={setPage} user={user}/>
                     : <ContentPage page={page} setPage={setPage}></ContentPage>
                 }
             </div>
         );
-    // }else{
-    //     return(
-    //         <div>
-    //             <LoginPage setUser={setUser} setIsLogin={setIsLogin}></LoginPage>
-    //         </div>
-    //     )
-    // }
+    }else{
+        return(
+            <div>
+                <LoginPage setUser={setUser} setIsLogin={setIsLogin}></LoginPage>
+            </div>
+        )
+    }
 
 }
 

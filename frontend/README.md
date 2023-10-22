@@ -1,4 +1,4 @@
-docker build -t registry.nakodeelee.ru/emerch-frontend:v16 .
+docker build -t registry.nakodeelee.ru/emerch-frontend:v40 .
 
 # Getting Started with Create React App
 

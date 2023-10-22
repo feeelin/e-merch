@@ -15,6 +15,15 @@ button{
   color: white;
 }
 
+input{
+  padding: 1vh 2vw;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 30px;
+  color: black;
+  text-align: center;
+}
+
 button:hover{
   background-color: #3d6b33;
   cursor: pointer;
