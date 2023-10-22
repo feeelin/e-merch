@@ -9,15 +9,15 @@ function App() {
     let [page, setPage] = useState('')
     let [isLogin, setIsLogin] = useState(false)
     let [user, setUser] = useState({})
-    let [tg, setTgWebAppData] = useState({})
 
+    let webAppData = {}
     let hash = window.location.hash.slice(1);
-    if (hash && !Object.keys(tg).length)
+    if (hash && !Object.keys(webAppData).length)
     {
         let hashParams = new URLSearchParams(hash);
         let tgWebAppData = new URLSearchParams(hashParams.get('tgWebAppData'));
         if (tgWebAppData !== undefined)
-            setTgWebAppData(tgWebAppData);
+            webAppData = tgWebAppData;
     }
 
     if(isLogin){
@@ -33,7 +33,7 @@ function App() {
     }else{
         return(
             <div>
-                <LoginPage setUserCallback={setUser} loginCallback={setIsLogin} tgWebAppData={tg}></LoginPage>
+                <LoginPage setUserCallback={setUser} loginCallback={setIsLogin} tgWebAppData={webAppData}></LoginPage>
             </div>
         )
     }
