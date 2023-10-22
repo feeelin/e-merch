@@ -40,7 +40,12 @@ const LoginPage = ({setUserCallback, loginCallback, tgWebAppData}) => {
     return (
         <div className={classes.form}>
             <Logo className={classes.logo}/>
-            <TelegramLoginButton dataOnauth={user => {setUserCallback(getCorrectUser(user))}} botName={'EMerchBot'}></TelegramLoginButton>
+            <TelegramLoginButton dataOnauth={user =>
+             {
+                let test = getCorrectUser(user);
+                debugger;
+                setUserCallback(test)
+             }} botName={'EMerchBot'}></TelegramLoginButton>
         </div>
     );
 };
